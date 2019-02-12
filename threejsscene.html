@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="../libs/jquery-ui/jquery-ui.css" />
+<link rel="stylesheet" href="../css/main.css" />
+<link rel="stylesheet" href="../css/threejsscene.css" />
+
+<script src="../libs/jquery-3.3.1/jquery-3.3.1.js"></script>
+<script src="../libs/jquery-ui/jquery-ui.js"></script>
+<script src="../libs/three.js/three.js"></script>
+<script src="../libs/three.js/controls/OrbitControls.js"></script>
+<script src="../libs/colorpicker/js/colorpicker.js"></script>
+
+<script src="threejsscene.js"></script>
+<script src="sceneHandlers.js"></script>
+
+<script type="text/javascript">
+       
+	$(document).ready(
+			function() {
+
+				$("#slider").slider({min: 0.001, max: 0.9, value: 0.09, step: 0.01, animate: false});
+				$("#slider").on("slide", function(e, u) {
+					scaleScene(u.value);
+					});
+				
+				var canvas = document.getElementById("webglcanvas");
+
+				// create the scene
+				createScene(canvas);
+
+				// add mouse handling so we can rotate the scene
+				//addMouseHandler(canvas);
+				
+		        // Run the run loop
+		        run();
+			}
+	);
+
+</script>
+
+</head>
+<body>
+
+	<div id="container">
+	    <canvas id="webglcanvas" width=1200 height=800></canvas>
+	</div>
+</body>
+<div id="properties">
+	Use these controls to change properties
+	<div id="directional" class="colorSelector">Directional<div style="background-color: #00ff00"></div></div>
+	<div id="point" class="colorSelector">Point<div style="background-color: #00ff00"></div></div>
+	<div id="spot" class="colorSelector">Spot<div style="background-color: #00ff00"></div></div>
+	<div id="ambient" class="colorSelector">Ambient<div style="background-color: #00ff00"></div></div>
+
+</html>
