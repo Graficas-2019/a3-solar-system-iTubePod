@@ -15,6 +15,17 @@ cone = null;
 sun = null;
 solarSystemGroup = null;
 
+//rotation pivots
+earthRotationPivot = null;
+mercuryRotationPivot = null;
+venusRotationPivot = null;
+marsRotationPivot = null;
+jupiterRotationPivot = null;
+saturnRotationPivot = null;
+uranusRotationPivot = null;
+neptuneRotationPivot = null;
+plutoRotationPivot = null;
+
 //mercury objects
 mercury = null;
 mercuryGroup = null;
@@ -28,7 +39,28 @@ earth = null;
 earthGroup = null;
 moon = null;
 
-var duration = 4000; // ms
+//mars objects
+mars = null;
+marsGroup = null;
+
+//jupiter objects
+jupiter = null;
+jupiterGroup = null;
+
+saturn = null;
+saturnGroup = null;
+
+uranus = null;
+uranusGroup = null;
+
+neptune = null;
+neptuneGroup = null;
+
+pluto = null;
+plutoGroup = null;
+
+
+var duration = 6500; // ms
 var currentTime = Date.now();
 
 function animate() 
@@ -40,25 +72,28 @@ function animate()
     var angle = Math.PI * 2 * fract;
     var movement = now * 0.001;
 
-    cubeGroup.rotation.x += angle;
+    //set each planet's rotation speeds
+    solarSystemGroup.rotation.y -= angle;
+    mercuryGroup.rotation.y -= angle*15;
+    venusGroup.rotation.y -= angle*12;
+    earthGroup.rotation.y -= angle*10;
+    marsGroup.rotation.y -= angle*8;
+    jupiterGroup.rotation.y -= angle*6;
+    saturnGroup.rotation.y -= angle*4;
+    uranusGroup.rotation.y -= angle*2;
+    neptuneGroup.rotation.y -= angle;
+    plutoGroup.rotation.y -= angle;
 
-    // Rotate the cube about its Y axis
-    cube.rotation.y += angle;
-
-    // Rotate the sphere group about its Y axis
-    sphereGroup.rotation.y -= angle / 2;
-    sphere.rotation.x += angle;
-    solarSystemGroup.rotation.y -= angle/2;
-    earthGroup.rotation.y -= angle;
-    mercuryGroup.rotation.y -= angle*4;
-    venusGroup.rotation.y -= angle*3;
-
-    earth.rotation.x *=2;
-    earth.rotation.y *=2;
-    earth.rotation.z *=2;
-
-    // Rotate the cone about its X axis (tumble forward)
-    cone.rotation.z += angle;
+    //set pivot rotation for planet traslation
+    mercuryRotationPivot.rotation.y += angle*2.5;
+    venusRotationPivot.rotation.y -= angle*1.2;
+    earthRotationPivot.rotation.y += angle*2;
+    marsRotationPivot.rotation.y -= angle*0.8;
+    jupiterRotationPivot.rotation.y += angle*1.6;
+    saturnRotationPivot.rotation.y -= angle/7;
+    uranusRotationPivot.rotation.y += angle*1.2;
+    neptuneRotationPivot.rotation.y -= angle/10;
+    plutoRotationPivot.rotation.y += angle*1.5;
 }
 
 function run() {
@@ -75,6 +110,29 @@ function run() {
     animate();
 }
 
+function createOrbits(solarSystemGroup, radius)
+{
+    var shape = new THREE.Shape();
+    shape.moveTo(radius, 0);
+    shape.absarc(0, 0, radius, 0, 2 * Math.PI, false);
+    var spacedPoints = shape.createSpacedPointsGeometry(360);
+
+    var vertexColors = [];
+    spacedPoints.vertices.forEach( function( vertex ){
+        vertexColors.push( new THREE.Color( 0xffffff ))
+    });
+    spacedPoints.colors = vertexColors;
+
+    var orbit = new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
+        vertexColors: THREE.VertexColors,
+        opacity: 0.3,
+        transparent: true
+    }));
+    orbit.rotation.x = Math.PI / 2;
+    orbit.position.set(0,0,-0.5);
+    solarSystemGroup.add(orbit);
+}
+
 function createScene(canvas)
 {    
     // Create the Three.js renderer and attach it to our canvas
@@ -88,7 +146,6 @@ function createScene(canvas)
 
     // Set the background color 
     scene.background = new THREE.Color( 0, 0, 0 );
-    // scene.background = new THREE.Color( "rgb(100, 100, 100)" );
 
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
@@ -97,8 +154,17 @@ function createScene(canvas)
 
     orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    // Create a group to hold all the objects
-    cubeGroup = new THREE.Object3D;
+    //Create Rotation Pivots
+    mercuryRotationPivot = new THREE.Object3D;
+    venusRotationPivot = new THREE.Object3D;
+    earthRotationPivot = new THREE.Object3D;
+    marsRotationPivot = new THREE.Object3D;
+    jupiterRotationPivot = new THREE.Object3D;
+    saturnRotationPivot = new THREE.Object3D;
+    uranusRotationPivot = new THREE.Object3D;
+    neptuneRotationPivot = new THREE.Object3D;
+    plutoRotationPivot = new THREE.Object3D;
+
     //creating sun to hold all the planets, animals, forms of life, asteroids
     solarSystemGroup = new THREE.Object3D;
     //creatin mercury group to hold mercury objects and moons
@@ -107,6 +173,19 @@ function createScene(canvas)
     venusGroup = new THREE.Object3D;
     //creating earth to hold all earth objects and moon
     earthGroup = new THREE.Object3D;
+    earthRotationPivot = new THREE.Object3D;
+    //creating mars group to hold all mars objects
+    marsGroup = new THREE.Object3D;
+    //creating jupiter group to hold all jupiter objects
+    jupiterGroup = new THREE.Object3D;
+
+    saturnGroup = new THREE.Object3D;
+
+    uranusGroup = new THREE.Object3D;
+
+    neptuneGroup = new THREE.Object3D;
+
+    plutoGroup = new THREE.Object3D;
     
     // Add a directional light to show off the objects
     var light = new THREE.DirectionalLight( 0xffffff, 1.0);
@@ -128,18 +207,71 @@ function createScene(canvas)
     var textureVenusUrl = "../images/venusmap.jpg";
     var textureEarthUrl = "../images/earthmap1k.jpg";
     var textureMoonUrl = "../images/moonmap1k.jpg";
-    var texture = new THREE.TextureLoader().load(textureUrl);
+    var textureMarsUrl = "../images/mars_1k_color.jpg";
+    var textureJupiterUrl = "../images/jupitermap.jpg";
+    var textureSaturnUrl = "../images/saturnmap.jpg";
+    var textureSaturnRingsUrl = "../images/saturnringcolor.jpg";
+    var textureUranusUrl = "../images/uranusmap.jpg";
+    var textureNeptuneUrl = "../images/neptunemap.jpg";
+    var texturePlutoUrl = "../images/plutomap1k.jpg";
+
+    // Planet textures
     var textureSun = new THREE.TextureLoader().load(textureSunUrl);
     var textureMercury = new THREE.TextureLoader().load(textureMercuryUrl);
     var textureVenus = new THREE.TextureLoader().load(textureVenusUrl);
     var textureEarth = new THREE.TextureLoader().load(textureEarthUrl);
-    var textureMoon = new THREE.TextureLoader().load( textureMoonUrl );
-    var material = new THREE.MeshPhongMaterial({ map: texture });
-    var materialSun = new THREE.MeshPhongMaterial( { map: textureSun });
-    var materialMercury = new THREE.MeshPhongMaterial( { map: textureMercury } );
-    var materialVenus = new THREE.MeshPhongMaterial( { map: textureVenus } );
-    var materialEarth = new THREE.MeshPhongMaterial( { map: textureEarth } );
-    var materialMoon = new THREE.MeshPhongMaterial( { map: textureMoon } );
+    var textureMoon = new THREE.TextureLoader().load(textureMoonUrl);
+    var textureMars = new THREE.TextureLoader().load(textureMarsUrl);
+    var textureJupiter = new THREE.TextureLoader().load(textureJupiterUrl);
+    var textureSaturn = new THREE.TextureLoader().load(textureSaturnUrl);
+    var textureSaturnRings = new THREE.TextureLoader().load(textureSaturnRingsUrl);
+    var textureUranus = new THREE.TextureLoader().load(textureUranusUrl);
+    var textureNeptune = new THREE.TextureLoader().load(textureNeptuneUrl);
+    var texturePluto = new THREE.TextureLoader().load(texturePlutoUrl);
+
+    // Materials
+    var materialSun = new THREE.MeshPhongMaterial({
+        map: textureSun
+    });
+    var materialMercury = new THREE.MeshPhongMaterial({
+        map: textureMercury
+    });
+    var materialVenus = new THREE.MeshPhongMaterial({
+        map: textureVenus
+    });
+    var materialEarth = new THREE.MeshPhongMaterial({
+        map: textureEarth
+    });
+    var materialMoon = new THREE.MeshPhongMaterial({
+        map: textureMoon
+    });
+    var materialMars = new THREE.MeshPhongMaterial({
+        map: textureMars
+    });
+    var materialJupiter = new THREE.MeshPhongMaterial({
+        map: textureJupiter
+    });
+    var materialSaturn = new THREE.MeshPhongMaterial({
+        map: textureSaturn
+    });
+    var materialSaturnRings = new THREE.MeshPhongMaterial({
+        map: textureSaturnRings,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.5
+    });
+    var materialUranus = new THREE.MeshPhongMaterial({
+        map: textureUranus
+    });
+    var materialNeptune = new THREE.MeshPhongMaterial({
+        map: textureNeptune
+    });
+    var materialPluto = new THREE.MeshPhongMaterial({
+        map: texturePluto
+    });
+    var materialTraslations = new THREE.MeshPhongMaterial({
+        color: 0xffffff
+    });
 
     // Create the cube geometry
     var geometry = new THREE.CubeGeometry(2, 2, 2);
@@ -148,71 +280,114 @@ function createScene(canvas)
     var geometryVenus = new THREE.SphereGeometry(2, 20, 20);
     var geometryEarth = new THREE.SphereGeometry(3, 20, 20);
     var geometryMoon = new THREE.SphereGeometry(0.8, 20, 20);
+    var geometryMars = new THREE.SphereGeometry(3.2,20,20);
+    var geometryJupiter = new THREE.SphereGeometry(4,20,20);
+    var geometrySaturn = new THREE.SphereGeometry(5,20,20);
+    var geometryUranus = new THREE.SphereGeometry(5,20,20);
+    var geometryNeptune = new THREE.SphereGeometry(5,20,20);
+    var geometryPluto = new THREE.SphereGeometry(2,20,20);
 
 
     // And put the geometry and material together into a mesh
-    cube = new THREE.Mesh(geometry, material);
+    //cube = new THREE.Mesh(geometry, material);
     sun = new THREE.Mesh(geometrySun, materialSun);
     mercury = new THREE.Mesh(geometryMercury, materialMercury);
     venus = new THREE.Mesh(geometryVenus, materialVenus);
     earth = new THREE.Mesh(geometryEarth, materialEarth);
     moon = new THREE.Mesh(geometryMoon, materialMoon);
+    mars = new THREE.Mesh(geometryMars, materialMars);
+    jupiter = new THREE.Mesh(geometryJupiter, materialJupiter);
+    saturn = new THREE.Mesh(geometrySaturn, materialSaturn);
+    uranus = new THREE.Mesh(geometryUranus, materialUranus);
+    neptune = new THREE.Mesh(geometryNeptune, materialNeptune);
+    pluto = new THREE.Mesh(geometryPluto, materialPluto);
 
     // Tilt the mesh toward the viewer
-    cube.rotation.x = Math.PI / 5;
-    cube.rotation.y = Math.PI / 5;
+    /*cube.rotation.x = Math.PI / 5;
+    cube.rotation.y = Math.PI / 5;*/
 
     // Add the cube mesh to our group
+
+    //add groups to its traslation pivot
+
+    mercuryRotationPivot.add(mercuryGroup);
+    venusRotationPivot.add(venusGroup);
+    earthRotationPivot.add(earthGroup);
+    marsRotationPivot.add(marsGroup);
+    jupiterRotationPivot.add(jupiterGroup);
+    saturnRotationPivot.add(saturnGroup);
+    uranusRotationPivot.add(uranusGroup);
+    neptuneRotationPivot.add(neptuneGroup);
+    plutoRotationPivot.add(plutoGroup);
+
     mercuryGroup.add(mercury);
     venusGroup.add(venus);
     earthGroup.add( earth );
     earthGroup.add (moon);
-    solarSystemGroup.add( sun );
-    solarSystemGroup.add(mercuryGroup);
-    solarSystemGroup.add(venusGroup);
-    solarSystemGroup.add( earthGroup );
+    marsGroup.add(mars);
+    jupiterGroup.add(jupiter);
+    saturnGroup.add(saturn);
+    uranusGroup.add(uranus);
+    neptuneGroup.add(neptune);
+    plutoGroup.add(pluto);
 
-    cubeGroup.position.set(1, 0, -0.5);
+    //add objects to solar system
+    solarSystemGroup.add( sun );
+
+    //Add Planet Traslation pivot
+    solarSystemGroup.add(mercuryRotationPivot);
+    solarSystemGroup.add(venusRotationPivot);
+    solarSystemGroup.add(earthRotationPivot);
+    solarSystemGroup.add(marsRotationPivot);
+    solarSystemGroup.add(jupiterRotationPivot);
+    solarSystemGroup.add(saturnRotationPivot);
+    solarSystemGroup.add(uranusRotationPivot);
+    solarSystemGroup.add(neptuneRotationPivot);
+    solarSystemGroup.add(plutoRotationPivot);
+
+    //set solar system position
     solarSystemGroup.position.set(0,0,-0.5);
 
-    mercuryGroup.position.set(-20,0,0.5);
+    //Set traslation pivots position to center
+    mercuryRotationPivot.position.set(0,0,-0.5);
+    venusRotationPivot.position.set(0,0,-0.5);
+    earthRotationPivot.position.set(0,0,-0.5);
+    marsRotationPivot.position.set(0,0,-0.5);
+    jupiterRotationPivot.position.set(0,0,-0.5);
+    saturnRotationPivot.position.set(0,0,-0.5);
+    uranusRotationPivot.position.set(0,0,-0.5);
+    neptuneRotationPivot.position.set(0,0,-0.5);
+    plutoRotationPivot.position.set(0,0,-0.5);
 
-    venusGroup.position.set(-30, 0, 0.5);
-
-    earthGroup.position.set(-50,0,-0.5);
+    //Set planets distance to sun
+    mercuryGroup.position.set(-30,0,0.5);
+    venusGroup.position.set(-60, 0, 0.5);
+    earthGroup.position.set(-90,0,-0.5);
     moon.position.set(-5,0,-0.5);
+    marsGroup.position.set(-120,0,-0.5);
+    jupiterGroup.position.set(-150,0,0,5);
+    saturnGroup.position.set(-180,0,0,5);
+    uranusGroup.position.set(-210,0,0,5);
+    neptuneGroup.position.set(-240,0,0,5);
+    plutoGroup.position.set(-270,0,0,5);
 
-    // Create a group for the sphere
-    sphereGroup = new THREE.Object3D;
-    cubeGroup.add(sphereGroup);
-    
-    // Move the sphere group up and back from the cube
-    sphereGroup.position.set(0, -3, -4);
+    //Create planets' orbits
+    createOrbits(solarSystemGroup, 30);
+    createOrbits(solarSystemGroup, 60);
+    createOrbits(solarSystemGroup, 90);
+    createOrbits(solarSystemGroup, 120);
+    createOrbits(solarSystemGroup, 150);
+    createOrbits(solarSystemGroup, 180);
+    createOrbits(solarSystemGroup, 210);
+    createOrbits(solarSystemGroup, 240);
+    createOrbits(solarSystemGroup, 270);
 
-    // Create the sphere geometry
-    geometry = new THREE.SphereGeometry(1, 20, 20);
-    
-    // And put the geometry and material together into a mesh
-    sphere = new THREE.Mesh(geometry, material);
+    //mercuryTraslation.position.set(0,0,-0.5);
 
-    // Add the sphere mesh to our group
-    sphereGroup.add( sphere );
-
-    // Create the cone geometry
-    geometry = new THREE.CylinderGeometry(0, .333, .444, 20, 5);
-
-    // And put the geometry and material together into a mesh
-    cone = new THREE.Mesh(geometry, material);
-
-    // Move the cone up and out from the sphere
-    cone.position.set(1, 1, -.667);
-        
-    // Add the cone mesh to our group
-    sphereGroup.add( cone );
     
     // Now add the group to our scene
-    //scene.add( cubeGroup );
-
     scene.add (solarSystemGroup); 
-    solarSystemGroup.scale.set(0.09,0.09,0.09);  
+    //scene.add(mercuryTraslation);
+    solarSystemGroup.scale.set(0.05,0.05,0.05);  
+    //mercuryTraslation.scale.set(0.05,0.05,0.05);
 }
