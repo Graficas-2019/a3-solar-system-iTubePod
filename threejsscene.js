@@ -81,6 +81,7 @@ asteroidRotationPivot94 = null;
 //mercury objects
 mercury = null;
 mercuryGroup = null;
+mercuryMoonRotation = new Array();
 
 //venus objects
 venus = null;
@@ -94,71 +95,34 @@ moon = null;
 //mars objects
 mars = null;
 marsGroup = null;
-marsMoon1 = null;
-marsMoon2 = null;
+marsMoonRotation = null;
 
 //jupiter objects
 jupiter = null;
 jupiterGroup = null;
-jupiterMoon1 = null;
-jupiterMoon2 = null;
-jupiterMoon3 = null;
-jupiterMoon4 = null;
-jupiterMoon5 = null;
-jupiterMoon6 = null;
-jupiterMoon7 = null;
-jupiterMoon8 = null;
-jupiterMoon9 = null;
-jupiterMoon0 = null;
+jupiterMoonRotation = null;
 
 
 saturn = null;
 saturnGroup = null;
-saturnMoon1 = null;
-saturnMoon2 = null;
-saturnMoon3 = null;
-saturnMoon4 = null;
-saturnMoon5 = null;
-saturnMoon6 = null;
-saturnMoon7 = null;
-saturnMoon8 = null;
-saturnMoon9 = null;
-saturnMoon0 = null;
+saturnMoonRotation = null;
 
 uranus = null;
 uranusGroup = null;
-uranusMoon1 = null;
-uranusMoon2 = null;
-uranusMoon3 = null;
-uranusMoon4 = null;
-uranusMoon5 = null;
-uranusMoon6 = null;
-uranusMoon7 = null;
-uranusMoon8 = null;
-uranusMoon9 = null;
-uranusMoon0 = null;
+uranusMoonRotation = null;
 
 neptune = null;
 neptuneGroup = null;
-neptuneMoon1 = null;
-neptuneMoon2 = null;
-neptuneMoon3 = null;
-neptuneMoon4 = null;
-neptuneMoon5 = null;
-neptuneMoon6 = null;
-neptuneMoon7 = null;
-neptuneMoon8 = null;
-neptuneMoon9 = null;
-neptuneMoon0 = null;
+neptuneMoonRotation = null;
 
 pluto = null;
 plutoGroup = null;
-neptuneMoon0 = null;
+plutoMoonRotation = null;
 
 vectorAsteroidsRotation = null;
 
 
-var duration = 6500; // ms
+var duration = 20000; // ms
 var currentTime = Date.now();
 
 function animate() 
@@ -172,7 +136,7 @@ function animate()
 
     //set each planet's rotation speeds
     solarSystemGroup.rotation.y -= angle;
-    mercuryGroup.rotation.y -= angle*1;
+    mercuryGroup.rotation.y -= angle*15;
     venusGroup.rotation.y -= angle*12;
     earthGroup.rotation.y -= angle*10;
     marsGroup.rotation.y -= angle*8;
@@ -193,26 +157,6 @@ function animate()
     neptuneRotationPivot.rotation.y -=  angle/10;
     plutoRotationPivot.rotation.y +=    angle*1.5;
 
-    var i;
-    var j;
-    for(i=1; i<solarSystemGroup.length; i++)
-    {
-        for(j=1; j<solarSystemGroup[i].length; j++)
-        {
-            random = Math.random() * (+1000 - +0) + +0;
-            random /= 1000;
-            if(j%2==0)
-            {
-                solarSystemGroup[i][j].rotation.y += angle*random;
-            }
-            else
-            {                
-                random += 1;
-                solarSystemGroup[i][j].rotation.y -= angle/random;
-            }
-        }
-    }
-
     //set asteroid pivot roation
     asteroidRotationPivot0.rotation.y += angle*1.8;
     asteroidRotationPivot1.rotation.y -= angle*1.6;
@@ -221,7 +165,7 @@ function animate()
     asteroidRotationPivot4.rotation.y += angle*1.2;
     asteroidRotationPivot5.rotation.y -= angle*1.1;
     asteroidRotationPivot6.rotation.y += angle*1.9;
-    asteroidRotationPivot7.rotation.y -= angle*1.85;
+    asteroidRotationPivot7.rotation.y -= angle*1.55;
     asteroidRotationPivot8.rotation.y += angle*1.92;
     asteroidRotationPivot9.rotation.y -= angle*1.37;
     asteroidRotationPivot01.rotation.y += angle*1.85;
@@ -265,6 +209,7 @@ function animate()
     asteroidRotationPivot84.rotation.y += angle*1.62;
     asteroidRotationPivot94.rotation.y -= angle*1.91;
 }
+
 function createMoons(planetGroup, numOfMoons)
 {
     var i;
@@ -273,22 +218,26 @@ function createMoons(planetGroup, numOfMoons)
     var materialRandomMoon = new THREE.MeshPhongMaterial({
         map: textureRandomMoons
     });
-    for(i = 0; i<numOfMoons; i++)
+    for(i = 0; i < numOfMoons; i++)
     {        
         var random = Math.random() * (+10 - +0) + +0;
         random*=-1;
         var random2 = Math.random() * (+100 - +0) + +0;
         random2/=500;
+        random2+=0.5;
         var random3 = Math.random() * (+1000 - +0) + +0;
         random3/=1000;
         random3+=1
+        var random3 = Math.random() * (+4 - +1) + +1;
         var geometryMoon = new THREE.SphereGeometry(random2, 20, 20);
         var randommoon = new THREE.Mesh(geometryMoon, materialRandomMoon);        
-        randommoon.position.set(random3,0,-0.5);
+        randommoon.position.set(i+5,0,-0.5);
         var randomPivot = new THREE.Object3D;
         randomPivot.position.set(0,0,-0.5);
-        randomPivot.rotation.x = Math.PI / random;
         randomPivot.add(randommoon);
+        randomPivot.rotation.x = Math.PI / random;
+        randomPivot.rotation.y = Math.PI / random;
+        randomPivot.rotation.z = Math.PI / random;
         planetGroup.add(randomPivot);
     }
 
@@ -358,7 +307,7 @@ function createAsteroids()
         var asteroid = new THREE.Mesh(new THREE.SphereGeometry(random2,20,20), new THREE.MeshPhongMaterial({
             map: new THREE.TextureLoader().load("../images/eros2k.jpg")
         }));
-        asteroid.position.set(-150-i,0,-0.5);        
+        asteroid.position.set(-140-i,0,-0.5);        
         vectorAsteroidsRotation[i].position.set(0,0,-0.5);
         vectorAsteroidsRotation[i].add(asteroid);
         solarSystemGroup.add(vectorAsteroidsRotation[i]);
@@ -400,6 +349,36 @@ function createOrbits(solarSystemGroup, radius)
     orbit.rotation.x = Math.PI / 2;
     orbit.position.set(0,0,-0.5);
     solarSystemGroup.add(orbit);
+}
+
+function createRings(planetGroup, radius, url)
+{
+    var shape = new THREE.Shape();
+    shape.moveTo(radius, 0);
+    shape.absarc(0, 0, radius, 0, 2 * Math.PI, false);
+    var spacedPoints = shape.createSpacedPointsGeometry(360);
+
+    var vertexColors = [];
+    spacedPoints.vertices.forEach( function( vertex ){
+        vertexColors.push( new THREE.Color( 0xffffff ))
+    });
+
+    spacedPoints.colors = vertexColors;
+    var textureRingsUrl = url;
+    var textureRings = new THREE.TextureLoader().load(textureRingsUrl);    
+    var materialRings = new THREE.MeshPhongMaterial({
+        map: textureRings,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.5
+    });
+
+
+    var geometryRings = new THREE.RingGeometry(1.2 * radius, 2 * radius, 2 * 100, 5, 0, Math.PI * 2);
+    var ring = new THREE.Mesh(geometryRings, materialRings);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.set(0,0,-0.5);
+    planetGroup.add(ring);
 }
 
 function createScene(canvas)
@@ -642,20 +621,19 @@ function createScene(canvas)
     plutoRotationPivot.add(plutoGroup);
 
     mercuryGroup.add(mercury);
-    createMoons(mercuryGroup,10);
     venusGroup.add(venus);
     earthGroup.add( earth );
     earthGroup.add (moon);
     marsGroup.add(mars);
     createMoons(marsGroup,2);
     jupiterGroup.add(jupiter);
-    createMoons(jupiterGroup,5);
+    createMoons(jupiterGroup,20);
     saturnGroup.add(saturn);
-    createMoons(saturnGroup,5);
+    createMoons(saturnGroup,20);
     uranusGroup.add(uranus);
-    createMoons(uranusGroup,5);
+    createMoons(uranusGroup,20);
     neptuneGroup.add(neptune);
-    createMoons(neptuneGroup,5);
+    createMoons(neptuneGroup,24);
     plutoGroup.add(pluto);
     createMoons(plutoGroup,5);
 
@@ -693,22 +671,24 @@ function createScene(canvas)
     earthGroup.position.set(-90,0,-0.5);
     moon.position.set(-5,0,-0.5);
     marsGroup.position.set(-120,0,-0.5);
-    jupiterGroup.position.set(-180,0,0,5);
-    saturnGroup.position.set(-210,0,0,5);
-    uranusGroup.position.set(-240,0,0,5);
-    neptuneGroup.position.set(-270,0,0,5);
-    plutoGroup.position.set(-300,0,0,5);
+    jupiterGroup.position.set(-200,0,0,5);
+    saturnGroup.position.set(-230,0,0,5);
+    createRings(saturnGroup, 5, "../images/saturnringcolor.jpg");
+    uranusGroup.position.set(-260,0,0,5);
+    createRings(uranusGroup, 5, "../images/uranusringcolour.jpg");
+    neptuneGroup.position.set(-290,0,0,5);
+    plutoGroup.position.set(-320,0,0,5);
 
     //Create planets' orbits
     createOrbits(solarSystemGroup, 30);
     createOrbits(solarSystemGroup, 60);
     createOrbits(solarSystemGroup, 90);
     createOrbits(solarSystemGroup, 120);
-    createOrbits(solarSystemGroup, 180);
-    createOrbits(solarSystemGroup, 210);
-    createOrbits(solarSystemGroup, 240);
-    createOrbits(solarSystemGroup, 270);
-    createOrbits(solarSystemGroup, 300);
+    createOrbits(solarSystemGroup, 200);
+    createOrbits(solarSystemGroup, 230);
+    createOrbits(solarSystemGroup, 260);
+    createOrbits(solarSystemGroup, 290);
+    createOrbits(solarSystemGroup, 320);
 
     createAsteroids();
 
