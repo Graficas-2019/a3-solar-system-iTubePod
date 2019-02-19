@@ -1,3 +1,4 @@
+
 var renderer = null,
 
 orbitControls = null;
@@ -26,6 +27,57 @@ uranusRotationPivot = null;
 neptuneRotationPivot = null;
 plutoRotationPivot = null;
 
+asteroidRotationPivot0 = null;
+asteroidRotationPivot1 = null;
+asteroidRotationPivot2 = null;
+asteroidRotationPivot3 = null;
+asteroidRotationPivot4 = null;
+asteroidRotationPivot5 = null;
+asteroidRotationPivot6 = null;
+asteroidRotationPivot7 = null;
+asteroidRotationPivot8 = null;
+asteroidRotationPivot9 = null;
+asteroidRotationPivot01 = null;
+asteroidRotationPivot11 = null;
+asteroidRotationPivot21 = null;
+asteroidRotationPivot31 = null;
+asteroidRotationPivot41 = null;
+asteroidRotationPivot51 = null;
+asteroidRotationPivot61 = null;
+asteroidRotationPivot71 = null;
+asteroidRotationPivot81 = null;
+asteroidRotationPivot91 = null;
+asteroidRotationPivot02 = null;
+asteroidRotationPivot12 = null;
+asteroidRotationPivot22 = null;
+asteroidRotationPivot32 = null;
+asteroidRotationPivot42 = null;
+asteroidRotationPivot52 = null;
+asteroidRotationPivot62 = null;
+asteroidRotationPivot72 = null;
+asteroidRotationPivot82 = null;
+asteroidRotationPivot92 = null;
+asteroidRotationPivot03 = null;
+asteroidRotationPivot13 = null;
+asteroidRotationPivot23 = null;
+asteroidRotationPivot33 = null;
+asteroidRotationPivot43 = null;
+asteroidRotationPivot53 = null;
+asteroidRotationPivot63 = null;
+asteroidRotationPivot73 = null;
+asteroidRotationPivot83 = null;
+asteroidRotationPivot93 = null;
+asteroidRotationPivot04 = null;
+asteroidRotationPivot14 = null;
+asteroidRotationPivot24 = null;
+asteroidRotationPivot34 = null;
+asteroidRotationPivot44 = null;
+asteroidRotationPivot54 = null;
+asteroidRotationPivot64 = null;
+asteroidRotationPivot74 = null;
+asteroidRotationPivot84 = null;
+asteroidRotationPivot94 = null;
+
 //mercury objects
 mercury = null;
 mercuryGroup = null;
@@ -42,22 +94,68 @@ moon = null;
 //mars objects
 mars = null;
 marsGroup = null;
+marsMoon1 = null;
+marsMoon2 = null;
 
 //jupiter objects
 jupiter = null;
 jupiterGroup = null;
+jupiterMoon1 = null;
+jupiterMoon2 = null;
+jupiterMoon3 = null;
+jupiterMoon4 = null;
+jupiterMoon5 = null;
+jupiterMoon6 = null;
+jupiterMoon7 = null;
+jupiterMoon8 = null;
+jupiterMoon9 = null;
+jupiterMoon0 = null;
+
 
 saturn = null;
 saturnGroup = null;
+saturnMoon1 = null;
+saturnMoon2 = null;
+saturnMoon3 = null;
+saturnMoon4 = null;
+saturnMoon5 = null;
+saturnMoon6 = null;
+saturnMoon7 = null;
+saturnMoon8 = null;
+saturnMoon9 = null;
+saturnMoon0 = null;
 
 uranus = null;
 uranusGroup = null;
+uranusMoon1 = null;
+uranusMoon2 = null;
+uranusMoon3 = null;
+uranusMoon4 = null;
+uranusMoon5 = null;
+uranusMoon6 = null;
+uranusMoon7 = null;
+uranusMoon8 = null;
+uranusMoon9 = null;
+uranusMoon0 = null;
 
 neptune = null;
 neptuneGroup = null;
+neptuneMoon1 = null;
+neptuneMoon2 = null;
+neptuneMoon3 = null;
+neptuneMoon4 = null;
+neptuneMoon5 = null;
+neptuneMoon6 = null;
+neptuneMoon7 = null;
+neptuneMoon8 = null;
+neptuneMoon9 = null;
+neptuneMoon0 = null;
 
 pluto = null;
 plutoGroup = null;
+neptuneMoon0 = null;
+
+vectorAsteroidsRotation = null;
 
 
 var duration = 6500; // ms
@@ -74,7 +172,7 @@ function animate()
 
     //set each planet's rotation speeds
     solarSystemGroup.rotation.y -= angle;
-    mercuryGroup.rotation.y -= angle*15;
+    mercuryGroup.rotation.y -= angle*1;
     venusGroup.rotation.y -= angle*12;
     earthGroup.rotation.y -= angle*10;
     marsGroup.rotation.y -= angle*8;
@@ -85,15 +183,186 @@ function animate()
     plutoGroup.rotation.y -= angle;
 
     //set pivot rotation for planet traslation
-    mercuryRotationPivot.rotation.y += angle*2.5;
-    venusRotationPivot.rotation.y -= angle*1.2;
-    earthRotationPivot.rotation.y += angle*2;
-    marsRotationPivot.rotation.y -= angle*0.8;
-    jupiterRotationPivot.rotation.y += angle*1.6;
-    saturnRotationPivot.rotation.y -= angle/7;
-    uranusRotationPivot.rotation.y += angle*1.2;
-    neptuneRotationPivot.rotation.y -= angle/10;
-    plutoRotationPivot.rotation.y += angle*1.5;
+    mercuryRotationPivot.rotation.y +=  angle*2.5;
+    venusRotationPivot.rotation.y -=    angle*1.2;
+    earthRotationPivot.rotation.y +=    angle*2;
+    marsRotationPivot.rotation.y -=     angle*0.8;
+    jupiterRotationPivot.rotation.y +=  angle*1.6;
+    saturnRotationPivot.rotation.y -=   angle/7;
+    uranusRotationPivot.rotation.y +=   angle*1.2;
+    neptuneRotationPivot.rotation.y -=  angle/10;
+    plutoRotationPivot.rotation.y +=    angle*1.5;
+
+    var i;
+    var j;
+    for(i=1; i<solarSystemGroup.length; i++)
+    {
+        for(j=1; j<solarSystemGroup[i].length; j++)
+        {
+            random = Math.random() * (+1000 - +0) + +0;
+            random /= 1000;
+            if(j%2==0)
+            {
+                solarSystemGroup[i][j].rotation.y += angle*random;
+            }
+            else
+            {                
+                random += 1;
+                solarSystemGroup[i][j].rotation.y -= angle/random;
+            }
+        }
+    }
+
+    //set asteroid pivot roation
+    asteroidRotationPivot0.rotation.y += angle*1.8;
+    asteroidRotationPivot1.rotation.y -= angle*1.6;
+    asteroidRotationPivot2.rotation.y += angle*1.4;
+    asteroidRotationPivot3.rotation.y -= angle*1.3;
+    asteroidRotationPivot4.rotation.y += angle*1.2;
+    asteroidRotationPivot5.rotation.y -= angle*1.1;
+    asteroidRotationPivot6.rotation.y += angle*1.9;
+    asteroidRotationPivot7.rotation.y -= angle*1.85;
+    asteroidRotationPivot8.rotation.y += angle*1.92;
+    asteroidRotationPivot9.rotation.y -= angle*1.37;
+    asteroidRotationPivot01.rotation.y += angle*1.85;
+    asteroidRotationPivot11.rotation.y -= angle*1.61;
+    asteroidRotationPivot21.rotation.y += angle*1.43;
+    asteroidRotationPivot31.rotation.y -= angle*1.34;
+    asteroidRotationPivot41.rotation.y += angle*1.27;
+    asteroidRotationPivot51.rotation.y -= angle*1.18;
+    asteroidRotationPivot61.rotation.y += angle*1.98;
+    asteroidRotationPivot71.rotation.y -= angle*1.81;
+    asteroidRotationPivot81.rotation.y += angle*1.52;
+    asteroidRotationPivot91.rotation.y -= angle*1.77;
+    asteroidRotationPivot02.rotation.y += angle*1.78;
+    asteroidRotationPivot12.rotation.y -= angle*1.26;
+    asteroidRotationPivot22.rotation.y += angle*1.74;
+    asteroidRotationPivot32.rotation.y -= angle*1.33;
+    asteroidRotationPivot42.rotation.y += angle*1.52;
+    asteroidRotationPivot52.rotation.y -= angle*1.31;
+    asteroidRotationPivot62.rotation.y += angle*1.79;
+    asteroidRotationPivot72.rotation.y -= angle*1.55;
+    asteroidRotationPivot82.rotation.y += angle*1.12;
+    asteroidRotationPivot92.rotation.y -= angle*1.47;
+    asteroidRotationPivot03.rotation.y += angle*1.9;
+    asteroidRotationPivot13.rotation.y -= angle*1.12;
+    asteroidRotationPivot23.rotation.y += angle*1.23;
+    asteroidRotationPivot33.rotation.y -= angle*1.53;
+    asteroidRotationPivot43.rotation.y += angle*1.23;
+    asteroidRotationPivot53.rotation.y -= angle*1.12;
+    asteroidRotationPivot63.rotation.y += angle*1.99;
+    asteroidRotationPivot73.rotation.y -= angle*1.15;
+    asteroidRotationPivot83.rotation.y += angle*1.22;
+    asteroidRotationPivot93.rotation.y -= angle*1.77;
+    asteroidRotationPivot04.rotation.y += angle*1.98;
+    asteroidRotationPivot14.rotation.y -= angle*1.36;
+    asteroidRotationPivot24.rotation.y += angle*1.74;
+    asteroidRotationPivot34.rotation.y -= angle*1.93;
+    asteroidRotationPivot44.rotation.y += angle*1.32;
+    asteroidRotationPivot54.rotation.y -= angle*1.14;
+    asteroidRotationPivot64.rotation.y += angle*1.95;
+    asteroidRotationPivot74.rotation.y -= angle*1.15;
+    asteroidRotationPivot84.rotation.y += angle*1.62;
+    asteroidRotationPivot94.rotation.y -= angle*1.91;
+}
+function createMoons(planetGroup, numOfMoons)
+{
+    var i;
+    var textureRandomMoonsUrl = "../images/eros2k.jpg";
+    var textureRandomMoons = new THREE.TextureLoader().load(textureRandomMoonsUrl);        
+    var materialRandomMoon = new THREE.MeshPhongMaterial({
+        map: textureRandomMoons
+    });
+    for(i = 0; i<numOfMoons; i++)
+    {        
+        var random = Math.random() * (+10 - +0) + +0;
+        random*=-1;
+        var random2 = Math.random() * (+100 - +0) + +0;
+        random2/=500;
+        var random3 = Math.random() * (+1000 - +0) + +0;
+        random3/=1000;
+        random3+=1
+        var geometryMoon = new THREE.SphereGeometry(random2, 20, 20);
+        var randommoon = new THREE.Mesh(geometryMoon, materialRandomMoon);        
+        randommoon.position.set(random3,0,-0.5);
+        var randomPivot = new THREE.Object3D;
+        randomPivot.position.set(0,0,-0.5);
+        randomPivot.rotation.x = Math.PI / random;
+        randomPivot.add(randommoon);
+        planetGroup.add(randomPivot);
+    }
+
+
+}
+
+function createAsteroids()
+{
+    vectorAsteroidsRotation = new Array();
+    vectorAsteroidsRotation.push(asteroidRotationPivot0);
+    vectorAsteroidsRotation.push(asteroidRotationPivot1);
+    vectorAsteroidsRotation.push(asteroidRotationPivot2);
+    vectorAsteroidsRotation.push(asteroidRotationPivot3);
+    vectorAsteroidsRotation.push(asteroidRotationPivot4);
+    vectorAsteroidsRotation.push(asteroidRotationPivot5);
+    vectorAsteroidsRotation.push(asteroidRotationPivot6);
+    vectorAsteroidsRotation.push(asteroidRotationPivot7);
+    vectorAsteroidsRotation.push(asteroidRotationPivot8);
+    vectorAsteroidsRotation.push(asteroidRotationPivot9);
+    vectorAsteroidsRotation.push(asteroidRotationPivot01);
+    vectorAsteroidsRotation.push(asteroidRotationPivot11);
+    vectorAsteroidsRotation.push(asteroidRotationPivot21);
+    vectorAsteroidsRotation.push(asteroidRotationPivot31);
+    vectorAsteroidsRotation.push(asteroidRotationPivot41);
+    vectorAsteroidsRotation.push(asteroidRotationPivot51);
+    vectorAsteroidsRotation.push(asteroidRotationPivot61);
+    vectorAsteroidsRotation.push(asteroidRotationPivot71);
+    vectorAsteroidsRotation.push(asteroidRotationPivot81);
+    vectorAsteroidsRotation.push(asteroidRotationPivot91);
+    vectorAsteroidsRotation.push(asteroidRotationPivot02);
+    vectorAsteroidsRotation.push(asteroidRotationPivot12);
+    vectorAsteroidsRotation.push(asteroidRotationPivot22);
+    vectorAsteroidsRotation.push(asteroidRotationPivot32);
+    vectorAsteroidsRotation.push(asteroidRotationPivot42);
+    vectorAsteroidsRotation.push(asteroidRotationPivot52);
+    vectorAsteroidsRotation.push(asteroidRotationPivot62);
+    vectorAsteroidsRotation.push(asteroidRotationPivot72);
+    vectorAsteroidsRotation.push(asteroidRotationPivot82);
+    vectorAsteroidsRotation.push(asteroidRotationPivot92);
+    vectorAsteroidsRotation.push(asteroidRotationPivot03);
+    vectorAsteroidsRotation.push(asteroidRotationPivot13);
+    vectorAsteroidsRotation.push(asteroidRotationPivot23);
+    vectorAsteroidsRotation.push(asteroidRotationPivot33);
+    vectorAsteroidsRotation.push(asteroidRotationPivot43);
+    vectorAsteroidsRotation.push(asteroidRotationPivot53);
+    vectorAsteroidsRotation.push(asteroidRotationPivot63);
+    vectorAsteroidsRotation.push(asteroidRotationPivot73);
+    vectorAsteroidsRotation.push(asteroidRotationPivot83);
+    vectorAsteroidsRotation.push(asteroidRotationPivot93);
+    vectorAsteroidsRotation.push(asteroidRotationPivot04);
+    vectorAsteroidsRotation.push(asteroidRotationPivot14);
+    vectorAsteroidsRotation.push(asteroidRotationPivot24);
+    vectorAsteroidsRotation.push(asteroidRotationPivot34);
+    vectorAsteroidsRotation.push(asteroidRotationPivot44);
+    vectorAsteroidsRotation.push(asteroidRotationPivot54);
+    vectorAsteroidsRotation.push(asteroidRotationPivot64);
+    vectorAsteroidsRotation.push(asteroidRotationPivot74);
+    vectorAsteroidsRotation.push(asteroidRotationPivot84);
+    vectorAsteroidsRotation.push(asteroidRotationPivot94);
+    
+    vectorAsteroidsRotation.push();
+    var i;
+    for (i = 0; i < 50; i++) {        
+        var random2 = Math.random() * (+100 - +0) + +0;
+        random2/=100;
+        random2+=1;
+        var asteroid = new THREE.Mesh(new THREE.SphereGeometry(random2,20,20), new THREE.MeshPhongMaterial({
+            map: new THREE.TextureLoader().load("../images/eros2k.jpg")
+        }));
+        asteroid.position.set(-150-i,0,-0.5);        
+        vectorAsteroidsRotation[i].position.set(0,0,-0.5);
+        vectorAsteroidsRotation[i].add(asteroid);
+        solarSystemGroup.add(vectorAsteroidsRotation[i]);
+    }
 }
 
 function run() {
@@ -164,6 +433,58 @@ function createScene(canvas)
     uranusRotationPivot = new THREE.Object3D;
     neptuneRotationPivot = new THREE.Object3D;
     plutoRotationPivot = new THREE.Object3D;
+
+    //Create rotationPivots
+    asteroidRotationPivot0 = new THREE.Object3D;
+    asteroidRotationPivot1 = new THREE.Object3D;
+    asteroidRotationPivot2 = new THREE.Object3D;
+    asteroidRotationPivot3 = new THREE.Object3D;
+    asteroidRotationPivot4 = new THREE.Object3D;
+    asteroidRotationPivot5 = new THREE.Object3D;
+    asteroidRotationPivot6 = new THREE.Object3D;
+    asteroidRotationPivot7 = new THREE.Object3D;
+    asteroidRotationPivot8 = new THREE.Object3D;
+    asteroidRotationPivot9 = new THREE.Object3D;
+    asteroidRotationPivot01 = new THREE.Object3D;
+    asteroidRotationPivot11 = new THREE.Object3D;
+    asteroidRotationPivot21 = new THREE.Object3D;
+    asteroidRotationPivot31 = new THREE.Object3D;
+    asteroidRotationPivot41 = new THREE.Object3D;
+    asteroidRotationPivot51 = new THREE.Object3D;
+    asteroidRotationPivot61 = new THREE.Object3D;
+    asteroidRotationPivot71 = new THREE.Object3D;
+    asteroidRotationPivot81 = new THREE.Object3D;
+    asteroidRotationPivot91 = new THREE.Object3D;
+    asteroidRotationPivot02 = new THREE.Object3D;
+    asteroidRotationPivot12 = new THREE.Object3D;
+    asteroidRotationPivot22 = new THREE.Object3D;
+    asteroidRotationPivot32 = new THREE.Object3D;
+    asteroidRotationPivot42 = new THREE.Object3D;
+    asteroidRotationPivot52 = new THREE.Object3D;
+    asteroidRotationPivot62 = new THREE.Object3D;
+    asteroidRotationPivot72 = new THREE.Object3D;
+    asteroidRotationPivot82 = new THREE.Object3D;
+    asteroidRotationPivot92 = new THREE.Object3D;
+    asteroidRotationPivot03 = new THREE.Object3D;
+    asteroidRotationPivot13 = new THREE.Object3D;
+    asteroidRotationPivot23 = new THREE.Object3D;
+    asteroidRotationPivot33 = new THREE.Object3D;
+    asteroidRotationPivot43 = new THREE.Object3D;
+    asteroidRotationPivot53 = new THREE.Object3D;
+    asteroidRotationPivot63 = new THREE.Object3D;
+    asteroidRotationPivot73 = new THREE.Object3D;
+    asteroidRotationPivot83 = new THREE.Object3D;
+    asteroidRotationPivot93 = new THREE.Object3D;
+    asteroidRotationPivot04 = new THREE.Object3D;
+    asteroidRotationPivot14 = new THREE.Object3D;
+    asteroidRotationPivot24 = new THREE.Object3D;
+    asteroidRotationPivot34 = new THREE.Object3D;
+    asteroidRotationPivot44 = new THREE.Object3D;
+    asteroidRotationPivot54 = new THREE.Object3D;
+    asteroidRotationPivot64 = new THREE.Object3D;
+    asteroidRotationPivot74 = new THREE.Object3D;
+    asteroidRotationPivot84 = new THREE.Object3D;
+    asteroidRotationPivot94 = new THREE.Object3D;
 
     //creating sun to hold all the planets, animals, forms of life, asteroids
     solarSystemGroup = new THREE.Object3D;
@@ -321,15 +642,22 @@ function createScene(canvas)
     plutoRotationPivot.add(plutoGroup);
 
     mercuryGroup.add(mercury);
+    createMoons(mercuryGroup,10);
     venusGroup.add(venus);
     earthGroup.add( earth );
     earthGroup.add (moon);
     marsGroup.add(mars);
+    createMoons(marsGroup,2);
     jupiterGroup.add(jupiter);
+    createMoons(jupiterGroup,5);
     saturnGroup.add(saturn);
+    createMoons(saturnGroup,5);
     uranusGroup.add(uranus);
+    createMoons(uranusGroup,5);
     neptuneGroup.add(neptune);
+    createMoons(neptuneGroup,5);
     plutoGroup.add(pluto);
+    createMoons(plutoGroup,5);
 
     //add objects to solar system
     solarSystemGroup.add( sun );
@@ -365,22 +693,24 @@ function createScene(canvas)
     earthGroup.position.set(-90,0,-0.5);
     moon.position.set(-5,0,-0.5);
     marsGroup.position.set(-120,0,-0.5);
-    jupiterGroup.position.set(-150,0,0,5);
-    saturnGroup.position.set(-180,0,0,5);
-    uranusGroup.position.set(-210,0,0,5);
-    neptuneGroup.position.set(-240,0,0,5);
-    plutoGroup.position.set(-270,0,0,5);
+    jupiterGroup.position.set(-180,0,0,5);
+    saturnGroup.position.set(-210,0,0,5);
+    uranusGroup.position.set(-240,0,0,5);
+    neptuneGroup.position.set(-270,0,0,5);
+    plutoGroup.position.set(-300,0,0,5);
 
     //Create planets' orbits
     createOrbits(solarSystemGroup, 30);
     createOrbits(solarSystemGroup, 60);
     createOrbits(solarSystemGroup, 90);
     createOrbits(solarSystemGroup, 120);
-    createOrbits(solarSystemGroup, 150);
     createOrbits(solarSystemGroup, 180);
     createOrbits(solarSystemGroup, 210);
     createOrbits(solarSystemGroup, 240);
     createOrbits(solarSystemGroup, 270);
+    createOrbits(solarSystemGroup, 300);
+
+    createAsteroids();
 
     //mercuryTraslation.position.set(0,0,-0.5);
 
